@@ -47,6 +47,15 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual(user);
   });
 
+  it('POST /sessions should sign in a user give a 401 if they are not signed in.', async ()=> {
+    const res = await request(app).get('/api/v1/users');
+
+    expect(res.body).toEqual({
+      message: 'Please sign in to continue',
+      status: 401
+    });
+  });
+
   afterAll(() => {
     pool.end();
   });
