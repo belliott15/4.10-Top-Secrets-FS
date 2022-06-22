@@ -2,6 +2,7 @@ const pool = require('../lib/utils/pool');
 const setup = require('../data/setup');
 const request = require('supertest');
 const app = require('../lib/app');
+const UserService = require('../lib/services/UserService');
 
 const testPerson = {
   first_name: 'Billy',
@@ -9,6 +10,16 @@ const testPerson = {
   email: 'billyB@unmarkedgrave.com',
   password: 'mmmMHMHhhhmmmm'
 };
+
+const registerAndLogin = async (userProps = {}) => {
+  const password = userProps.password ?? testPerson.password;
+  const agent = request.agent(app);
+  const user = await UserService.create({ ...testPerson, ...userProps });
+
+  const { email } = user;
+  await agent.post('/api/v1/users/sessions').send({ email, password });
+  return [agent, user];
+}
 
 describe('backend-express-template routes', () => {
   beforeEach(() => {
@@ -28,18 +39,13 @@ describe('backend-express-template routes', () => {
     });
   });
 
-  // it('POST / should create a new user', () => {
-  //   const res = await request(app)
-  //   .post('/api/v1/users')
-  //   .send(testPerson);
-  //   const { first_name, last_name, email } = testPerson;
-  //   expect(res.body).toEqual({
-  //     id: expect.any(string),
-  //     first_name, 
-  //     last_name, 
-  //     email
-  //   });
-  // });
+  it('GET / should get the current user', async () => {
+    const [agent, user] = await registerAndLogin();
+    const res = await agent
+      .get('/api/v1/users/me');
+
+    expect(res.body).toEqual(user);
+  });
 
   afterAll(() => {
     pool.end();
