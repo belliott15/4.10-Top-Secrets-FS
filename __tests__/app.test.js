@@ -76,7 +76,7 @@ describe('backend-express-template routes', () => {
     expect(res.body).toEqual([{ ...user }]);
   });
 
-  it('delete / should remove the user from being logged in', async () => {
+  it('delete /sessions should remove the user from being logged in', async () => {
     const [agent, user] = await registerAndLogin({ email: 'admin' });
     const res = await agent.get('/api/v1/users');
 
