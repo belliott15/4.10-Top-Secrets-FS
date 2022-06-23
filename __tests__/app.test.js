@@ -69,6 +69,12 @@ describe('backend-express-template routes', () => {
     });
   });
 
+  it('GET / should return a list of users when signed in as an admin', async () => {
+    const [agent, user] = await registerAndLogin({ email: 'admin' });
+    const res = await agent.get('/api/v1/users');
+
+    expect(res.body).toEqual([{ ...user }]);
+  });
 
   afterAll(() => {
     pool.end();
