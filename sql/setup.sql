@@ -17,3 +17,10 @@ CREATE TABLE secrets (
     description VARCHAR NOT NULL,
     created_at TIMESTAMP NOT NULL
 );
+
+INSERT INTO secrets (
+    title, 
+    description, 
+)
+VALUES 
+('Victorias Secret', 'Who really knows')
