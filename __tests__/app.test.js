@@ -59,6 +59,15 @@ describe('backend-express-template routes', () => {
     });
   });
 
+  it('GET / should return a 403 when signed in but not an admin', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.get('/api/v1/users');
+
+    expect(res.body).toEqual({
+      message: 'Only admins have access to this page',
+      status: 403
+    });
+  });
 
 
   afterAll(() => {
