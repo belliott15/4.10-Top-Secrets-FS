@@ -19,7 +19,7 @@ const registerAndLogin = async (userProps = {}) => {
   const { email } = user;
   await agent.post('/api/v1/users/sessions').send({ email, password });
   return [agent, user];
-}
+};
 
 describe('backend-express-template routes', () => {
   beforeEach(() => {
@@ -44,11 +44,14 @@ describe('backend-express-template routes', () => {
     const res = await agent
       .get('/api/v1/users/me');
 
-    expect(res.body).toEqual(user);
+    expect(res.body).toEqual({ ...user, 
+      exp: expect.any(Number), 
+      iat: expect.any(Number),
+    });
   });
 
-  it('POST /sessions should sign in a user give a 401 if they are not signed in.', async ()=> {
-    const res = await request(app).get('/api/v1/users');
+  it('POST /sessions should sign in a user give a 401 if they are not signed in.', async () => {
+    const res = await request(app).post('/api/v1/users/sessions').send(testPerson);
 
     expect(res.body).toEqual({
       message: 'Please sign in to continue',
