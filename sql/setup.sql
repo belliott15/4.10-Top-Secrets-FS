@@ -15,12 +15,12 @@ CREATE TABLE secrets (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     title VARCHAR NOT NULL,
     description VARCHAR NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 INSERT INTO secrets (
     title, 
-    description, 
+    description
 )
 VALUES 
-('Victorias Secret', 'Who really knows')
+('Victorias Secret', 'Who really knows');
