@@ -95,6 +95,13 @@ describe('backend-express-template routes', () => {
     });
   });
 
+  it('POST /secrets should allow authorized users to post a new secret', async () => {
+    const [agent] = await registerAndLogin();
+    const res = await agent.post('/api/v1/secrets').send({ title: 'Cool Secret', description: 'Wow Secrets' });
+
+    expect(res.body).toEqual({ title: 'Cool Secret', description: 'Wow Secrets' });
+  });
+
   afterAll(() => {
     pool.end();
   });
