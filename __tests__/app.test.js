@@ -99,7 +99,12 @@ describe('backend-express-template routes', () => {
     const [agent] = await registerAndLogin();
     const res = await agent.post('/api/v1/secrets').send({ title: 'Cool Secret', description: 'Wow Secrets' });
 
-    expect(res.body).toEqual({ title: 'Cool Secret', description: 'Wow Secrets' });
+    expect(res.body).toEqual({
+      id: expect.any(String),
+      title: 'Cool Secret', 
+      description: 'Wow Secrets', 
+      created_at: expect.any(String)
+    });
   });
 
   afterAll(() => {
