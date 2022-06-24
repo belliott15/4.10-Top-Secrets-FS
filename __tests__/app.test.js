@@ -84,13 +84,14 @@ describe('backend-express-template routes', () => {
   });
 
   it('GET /secrets should show secrets to signed in users', async () => {
-    const res = await request(app).get('/api/v1/secrets');
+    const [agent] = await registerAndLogin();
+    const res = await agent.get('/api/v1/secrets');
 
-    expect(res.body).toEqual({
-      id: expect.any(String),
+    expect(res.body[0]).toEqual({
+      id: '1',
       title: 'Victorias Secret', 
-      desciption: 'Who really knows', 
-      created_at: expect.any(Number)
+      description: 'Who really knows', 
+      created_at: expect.any(String)
     });
   });
 
